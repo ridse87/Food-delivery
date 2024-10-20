@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="foodDeliveryApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Delivery</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="FoodController">
+
+    <header>
+        <div class="navbar">
+            <h1>Fast Food Delivery</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for products..." ng-model="searchText">
+                <button>Search</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="categories">
+        <h2>Categories</h2>
+        <ul>
+            <li ng-click="filterCategory('All')">All</li>
+            <li ng-click="filterCategory('Snacks')">Snacks</li>
+            <li ng-click="filterCategory('Meals')">Meals</li>
+            <li ng-click="filterCategory('Beverages')">Beverages</li>
+            <li ng-click="filterCategory('Desserts')">Desserts</li>
+        </ul>
+    </section>
+
+    <section class="product-grid">
+        <div class="product-card" ng-repeat="food in filteredFoods | filter:searchText">
+            <img ng-src="{{ food.image }}" alt="{{ food.name }}">
+            <h3>{{ food.name }}</h3>
+            <p>{{ food.description }}</p>
+            <p class="price">${{ food.price }}</p>
+            <button ng-click="addToCart(food)">Add to Cart</button>
+        </div>
+    </section>
+
+    <section class="cart">
+        <h2>Your Cart</h2>
+        <div ng-if="cart.length === 0">
+            <p>Your cart is empty</p>
+        </div>
+        <ul>
+            <li ng-repeat="item in cart">
+                {{ item.name }} - ${{ item.price }} <button ng-click="removeFromCart($index)">Remove</button>
+            </li>
+        </ul>
+        <p ng-if="cart.length > 0">Total: ${{ getTotal() }}</p>
+        <button ng-if="cart.length > 0" ng-click="placeOrder()">Place Order</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Fast Food Delivery</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
